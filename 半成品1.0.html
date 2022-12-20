@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>半成品1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box-front,
+        .box-back {
+            /* 宽高与父元素.box保持一致 */
+            width: 100%;
+            height: 100%;
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+        }
+
+        .home {
+            background-image: radial-gradient(circle farthest-corner at 92.3% 71.5%,
+                    rgba(83, 138, 214, 1) 0%,
+                    rgba(134, 231, 214, 1) 90%);
+            height: 100vh;
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+            /* 字体样式 */
+            font-family: Helvetica, Arial, sans-serif;
+            /* 字体大小 */
+            font-size: xx-large;
+        }
+
+        /* 调整首页元素位置 */
+        .homepage {
+            position: relative;
+            top: -100px;
+        }
+
+        .partion {
+            height: 120vh;
+            background-image: linear-gradient(94.3deg, rgba(26, 33, 64, 1) 10.9%, rgba(81, 84, 115, 1) 87.1%);
+            /* 弹性盒子布局 */
+            /* 纵向排列 */
+            flex-direction: column;
+            /* 左对齐 */
+            justify-content: flex-start;
+            /* 居中 */
+            align-items: center;
+        }
+
+        .partionBox {
+            position: relative;
+            top: 150px;
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+        }
+
+        .musicLibrary,
+        .myCollection {
+            height: 120vh;
+            background-image: linear-gradient(94.3deg, rgba(26, 33, 64, 1) 10.9%, rgba(81, 84, 115, 1) 87.1%);
+            /* 弹性盒子布局 */
+            /* 纵向排列 */
+            flex-direction: column;
+            /* 右对齐 */
+            justify-content: flex-start;
+            /* 居中 */
+            align-items: center;
+        }
+
+        .container {
+            /* 宽与父级元素.musicLibrary成比例，.musicLibrary为弹性布局，能充分利用宽度空间 */
+            width: 95%;
+            /* 由内容决定高度 */
+            height: auto;
+            /* 网格布局 */
+            display: grid;
+            /* 设置为5列 */
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            /* 间隔 */
+            gap: 25px;
+        }
+
+        /* 默认(主页)翻转动画-start */
+        .box {
+            width: 500px;
+            height: 400px;
+            position: relative;
+            /* 使得子元素旋转时看起来更加立体 */
+            perspective: 1000px;
+        }
+
+        .box-front,
+        .box-back {
+            position: absolute;
+            /* 当元素背面向屏幕时设置为隐藏不可见 */
+            backface-visibility: hidden;
+            /* 翻转动画 */
+            /* 过渡：过渡属性，过渡时间，过渡速度曲线，过渡生效时间 */
+            transition: transform 1s ease-in-out;
+            /* 圆角 */
+            border-radius: 10%;
+            /* 使得元素看起来更加立体   */
+            /* 阴影：水平阴影位置，垂直阴影位置，模糊距离，阴影的尺寸，阴影的颜色，外部阴影 outset(默认)/内部阴影inset */
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.18);
+            text-shadow: 0 0.15rem 0.2rem rgba(0, 0, 0, 0.2);
+        }
+
+        .box-front {
+            /* 状态为旋转0deg后的状态 */
+            transform: rotateX(0deg);
+            background-color: #8ce6d5;
+            color: #6ca5d3;
+        }
+
+        .box:hover .box-front {
+            /* 沿X轴旋转 0→180 */
+            transform: rotateX(180deg);
+        }
+
+        .box-back {
+            /* 状态初始为旋转-180deg后的状态 */
+            transform: rotateX(-180deg);
+            background-color: #6ca5d3;
+            color: #86d7d6;
+        }
+
+        .box:hover .box-back {
+            /* 沿X轴旋转 -180→0 */
+            transform: rotateX(0deg);
+        }
+
+        /* end */
+
+        /* 分区翻转动画-start */
+        .partion>.partionBox>.box {
+            width: 200px;
+            height: 400px;
+            position: relative;
+            /* 使得子元素旋转时看起来更加立体 */
+            perspective: 1000px;
+        }
+
+        .partion>.partionBox>.box>.box-front,
+        .partion>.partionBox>.box>.box-back {
+            transition: transform 0.5s ease-in-out;
+            border-radius: 10%;
+            border-style: solid;
+        }
+
+        .partion>.partionBox>.box>.box-front {
+            transform: rotateY(25deg);
+            background-color: #292b4b;
+            color: #6ca5d3;
+        }
+
+        .partion>.partionBox>.box:hover .box-front {
+            transform: rotateY(180deg);
+        }
+
+        .partion>.partionBox>.box>.box-back {
+            transform: rotateY(-180deg);
+            background-color: #4d4d6d;
+            color: #86d7d6;
+        }
+
+        .partion>.partionBox>.box:hover .box-back {
+            transform: rotateY(25deg);
+        }
+
+        /* end */
+
+        /* 曲库 和 我的收藏 翻转动画-start */
+        .myCollection>.container>.box,
+        .musicLibrary>.container>.box {
+            width: auto;
+            height: 200px;
+            perspective: 1000px;
+        }
+
+        .myCollection>.container>.box>.box-front,
+        .musicLibrary>.container>.box>.box-front {
+            transition: transform 0.5s ease-in-out;
+            /* 圆角 */
+            border-radius: 25px;
+        }
+
+        .myCollection>.container>.box>.box-back,
+        .musicLibrary>.container>.box>.box-back {
+            text-align: center;
+            font-size: x-large;
+            transition: transform 0.5s ease-in-out;
+            /* 圆角 */
+            border-radius: 25px;
+            display: flex;
+            /* 纵向排列 */
+            flex-direction: column;
+            /* 右对齐 */
+            justify-content: flex-end;
+            /* 居中 */
+            align-items: center;
+        }
+
+        .myCollection>.container>.box>.box-front,
+        .musicLibrary>.container>.box>.box-front {
+            transform: rotateY(0deg);
+        }
+
+        .myCollection>.container>.box:hover .box-front,
+        .musicLibrary>.container>.box:hover .box-front {
+            transform: rotateY(180deg);
+        }
+
+        .myCollection>.container>.box>.box-back,
+        .musicLibrary>.container>.box>.box-back {
+            transform: rotateY(-180deg);
+        }
+
+        .myCollection>.container>.box:hover .box-back,
+        .musicLibrary>.container>.box:hover .box-back {
+            transform: rotateY(0deg);
+        }
+
+        /* end */
+
+        .partion,
+        .musicLibrary,
+        .myCollection {
+            /* 隐藏，脱离文档流 */
+            display: none;
+        }
+
+        .collection {
+            width: 40px;
+            height: 40px;
+            margin-right: 100%;
+            border-style: solid;
+            border-radius: 50%;
+            /* 透明 */
+            background-color: rgb(0, 0, 0, 0);
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+        }
+
+        audio {
+            width: 120%;
+        }
+
+
+        /* 导航栏 */
+        .topbar {
+            width: 100%;
+            height: 50px;
+            background-image: linear-gradient(94.3deg, rgba(26, 33, 64, 1) 10.9%, rgba(81, 84, 115, 1) 87.1%);
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 左对齐 */
+            justify-content: flex-start;
+        }
+
+        .returnbox {
+            margin: 5px;
+            padding: 10px;
+            width: 20px;
+            height: 20px;
+            /* 弹性盒子布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+
+            border-color: #75a3d2;
+            border-style: solid;
+            border-radius: 40%;
+            color: #74a1d0;
+            font-size: large;
+            text-shadow: 0 0.15rem 0.2rem rgba(0, 0, 0, 0.2);
+        }
+
+
+        .returnbox:hover {
+            background-color: #92e6d5;
+        }
+
+        .icon {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 轮播图 */
+        .bannertext {
+            position: relative;
+            left: -30px;
+            top: -20px;
+            text-align: center;
+        }
+
+        #banner {
+            width: 335px;
+            height: 471px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            float: left;
+            left: -30px;
+            border-radius: 20px;
+        }
+
+        #imglist {
+            width: 2010px;
+            height: 471px;
+            position: absolute;
+            z-index: 90;
+        }
+
+        #imglist img {
+            float: left;
+        }
+
+        #cuts {
+            position: absolute;
+            bottom: 20px;
+            left: 100px;
+            z-index: 100;
+        }
+
+        #cuts span {
+            float: left;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            margin-left: 20px;
+        }
+
+        #cuts .on {
+            background: rgb(157, 77, 183);
+        }
+
+        .arrow {
+            width: 30px;
+            height: 60px;
+            line-height: 60px;
+            position: absolute;
+            top: 200px;
+            z-index: 100;
+            background: rgba(0, 0, 0, .2);
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            display: none;
+        }
+
+        .arrow:hover {
+            background: rgba(0, 0, 0, .5);
+        }
+
+        #banner:hover .arrow {
+            display: block;
+        }
+
+        #prev {
+            left: 0;
+        }
+
+        #next {
+            right: 0;
+        }
+
+        /* 打字机效果 */
+        .typingbox {
+            width: 700px;
+            height: 70px;
+            position: relative;
+            left: -70px;
+        }
+
+        :root {
+            font-size: 20px;
+        }
+
+        .typing {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .h1 {
+            font-size: 2rem;
+            margin: 0;
+            padding: 0;
+            font-family: monospace;
+            position: relative;
+            color: rgb(218, 131, 69);
+        }
+
+        @keyframes cursor {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .h1 span {
+            --delay: 10s;
+
+            display: inline-block;
+            overflow: hidden;
+            width: 0ch;
+            animation: 0.1s text-in ease-in-out forwards;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes text-in {
+            from {
+                width: 0ch;
+            }
+
+            to {
+                width: 1ch;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 主页 -->
+    <div class="home">
+        <div class="homepage">
+            <div class="box">
+                <div class="typingbox ">
+                    <h1 class="h1">Beginning your musical journey</h1>
+                </div>
+                <div class="box-front">欢迎</div>
+                <div class="box-back" onclick="enterPartion()">进入</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分区 -->
+    <div class="partion">
+        <div class="topbar">
+            <div class="returnbox" onclick="returnhome()"><img class="icon" src="images/homepage.png"></div>
+            <div class="returnbox" onclick="returnmusiclibrary()"><img class="icon" src="images/musiclibrarypage.png">
+            </div>
+            <div class="returnbox" onclick="returnmycollection()"><img class="icon" src="images/collectionpage.png"></div>
+        </div>
+        <div class="partionBox">
+            <nav style="display:block;">
+                <div class="bannertext">
+                    <h1>每日专辑推荐</h1>
+                </div>
+                <div id="banner">
+                    <div id="imglist" style="left:-335px">
+                        <img src="images/4.png" width="335px" height="471px">
+                        <img src="images/1.png" width="335px" height="471px">
+                        <img src="images/2.png" width="335px" height="471px">
+                        <img src="images/3.png" width="335px" height="471px">
+                        <img src="images/4.png" width="335px" height="471px">
+                        <img src="images/1.png" width="335px" height="471px">
+                    </div>
+                    <div id="cuts">
+                        <span index="1" class="on"></span>
+                        <span index="2"></span>
+                        <span index="3"></span>
+                        <span index="4"></span>
+                    </div>
+                    <i id="prev" class="arrow">&lt;</i>
+                    <i id="next" class="arrow">&gt;</i>
+                </div>
+            </nav>
+            <div class="box" id="partion1">
+                <div class="box-front">曲库</div>
+                <div class="box-back" onclick="enterMusicLibrary()">进入</div>
+            </div>
+
+            <div class="box" id="partion2">
+                <div class="box-front">我的收藏</div>
+                <div class="box-back" onclick="enterMyCollection()">进入</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 曲库 -->
+    <div class="musicLibrary">
+        <div class="topbar">
+            <div class="returnbox" onclick="musicLibraryreturnpartion()">
+                ＜
+            </div>
+            <div class="returnbox" onclick="returnhome()"><img class="icon" src="images/homepage.png"></div>
+            <div class="returnbox" onclick="returnmycollection()"><img class="icon" src="images/collectionpage.png">
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="box">
+                <div class="box-front">MOM</div>
+                <div class="box-back">
+                    <p>天空是蔚蓝色，窗外有千纸鹤。</p>
+                    <!-- 自定义属性collection="0"表示未收藏状态，collection="1"表示已收藏状态 -->
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(1)" onmouseover="changeColor1(1)" onmouseleave="changeColor2(1)"></div>
+                    <audio controls>
+                        <source src="music/1.mp4" />
+                        <!-- 可以指定多个音频文件为不同的浏览器提供可支持的编码格式 -->
+                        <!-- 直接在audio内部添加提示语句，如果浏览器支持则不会显示出来 -->
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">大喜</div>
+                <div class="box-back">
+                    <p>南来飞燕终归巢 有情相会七夕桥</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(2)" onmouseover="changeColor1(2)" onmouseleave="changeColor2(2)"></div>
+                    <audio controls>
+                        <source src="music/2.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">枕边童话</div>
+                <div class="box-back">
+                    <p>请和我起舞趁着童话还没有结束</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(3)" onmouseover="changeColor1(3)" onmouseleave="changeColor2(3)"></div>
+                    <audio controls>
+                        <source src="music/3.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">万象霜天</div>
+                <div class="box-back">
+                    <p>太初太易 无相无形 莫知浊重 孰辨清轻</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(4)" onmouseover="changeColor1(4)" onmouseleave="changeColor2(4)"></div>
+                    <audio controls>
+                        <source src="music/4.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">赤伶</div>
+                <div class="box-back">
+                    <p>大气歌唱华夏百年，位卑未敢忘忧国</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(5)" onmouseover="changeColor1(5)" onmouseleave="changeColor2(5)"></div>
+                    <audio controls>
+                        <source src="music/5.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">黑凤梨</div>
+                <div class="box-back">
+                    <p>越是看不清的东西 人越想要</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(6)" onmouseover="changeColor1(6)" onmouseleave="changeColor2(6)"></div>
+                    <audio controls>
+                        <source src="music/6.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">神女劈观·唤情</div>
+                <div class="box-back">
+                    <p>秋鸿折单复难双 凡缘朦朦仙缘滔</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(7)" onmouseover="changeColor1(7)" onmouseleave="changeColor2(7)"></div>
+                    <audio controls>
+                        <source src="music/7.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="box-front">虞兮叹</div>
+                <div class="box-back">
+                    <p>霸王意气尽，贱妾何聊生</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(8)" onmouseover="changeColor1(8)" onmouseleave="changeColor2(8)"></div>
+                    <audio controls>
+                        <source src="music/8.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">盗墓笔记 · 十年人间</div>
+                <div class="box-back">
+                    <p>世人惊羡的桥段不过寻常</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(9)" onmouseover="changeColor1(9)" onmouseleave="changeColor2(9)"></div>
+                    <audio controls>
+                        <source src="music/9.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">莫问归期</div>
+                <div class="box-back">
+                    <p>莫问天涯 也莫问归期 情断之时 冷暖自知</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(10)" onmouseover="changeColor1(10)" onmouseleave="changeColor2(10)">
+                    </div>
+                    <audio controls>
+                        <source src="music/10.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">娶+嫁</div>
+                <div class="box-back">
+                    <p>一时唢呐起 送喜却好似入葬</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(11)" onmouseover="changeColor1(11)" onmouseleave="changeColor2(11)">
+                    </div>
+                    <audio controls>
+                        <source src="music/11.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">探窗</div>
+                <div class="box-back">
+                    <p>一句一叹 戏里有情痴</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(12)" onmouseover="changeColor1(12)" onmouseleave="changeColor2(12)">
+                    </div>
+                    <audio controls>
+                        <source src="music/12.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="box-front">花月成双</div>
+                <div class="box-back">
+                    <p>❀花月成双❀是人间最值得模样</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(13)" onmouseover="changeColor1(13)" onmouseleave="changeColor2(13)">
+                    </div>
+                    <audio controls>
+                        <source src="music/13.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">不问天</div>
+                <div class="box-back">
+                    <p>良辰不问天 好景在人间</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(14)" onmouseover="changeColor1(14)" onmouseleave="changeColor2(14)">
+                    </div>
+                    <audio controls>
+                        <source src="music/14.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">云月谣</div>
+                <div class="box-back">
+                    <p>人间幸事几多 悲愁欢喜 总有时消</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(15)" onmouseover="changeColor1(15)" onmouseleave="changeColor2(15)">
+                    </div>
+                    <audio controls>
+                        <source src="music/15.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-front">心无所扰</div>
+                <div class="box-back">
+                    <p>心无所扰 古风弦音 诉尽衷肠 初心不忘</p>
+                    <div class="collection" collection="0"><img class="icon" src="images/collection.png"
+                            onclick="collection(16)" onmouseover="changeColor1(16)" onmouseleave="changeColor2(16)">
+                    </div>
+                    <audio controls>
+                        <source src="music/16.mp4" />
+                        对不起，您的浏览器不支持HTML5音频播放。
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的收藏 -->
+    <div class="myCollection">
+        <div class="topbar">
+            <div class="returnbox" onclick="myCollectionreturnpartion()">
+                ＜
+            </div>
+            <div class="returnbox" onclick="returnhome()"><img class="icon" src="images/homepage.png"></div>
+            <div class="returnbox" onclick="returnmusiclibrary()"><img class="icon" src="images/musiclibrarypage.png">
+            </div>
+        </div>
+        <!-- 创建歌曲盒子时提供存放的临时区域 -->
+        <div class="temp"></div>
+        <div class="container"></div>
+    </div>
+</body>
+
+<script>
+    //进入分区
+    function enterPartion() {
+        //将“主页”隐藏
+        document.getElementsByClassName("home")[0].style.display = "none";
+        // 将“分区”显现，同时设置为弹性布局
+        document.getElementsByClassName("partion")[0].style.display = "flex";
+    }
+    //进入曲库
+    function enterMusicLibrary() {
+        // 将“分区”隐藏
+        document.getElementsByClassName("partion")[0].style.display = "none";
+        // 将“曲库”显现，同时设置为弹性布局
+        document.getElementsByClassName("musicLibrary")[0].style.display = "flex";
+    }
+    //进入我的收藏
+    function enterMyCollection() {
+        // 将“分区”隐藏
+        document.getElementsByClassName("partion")[0].style.display = "none";
+        // 将“我的收藏”显现，同时设置为弹性布局
+        document.getElementsByClassName("myCollection")[0].style.display = "flex";
+    }
+    //曲库回分区
+    function musicLibraryreturnpartion() {
+        document.getElementsByClassName("musicLibrary")[0].style.display = "none";
+        // 将“分区”显现，同时设置为弹性布局
+        document.getElementsByClassName("partion")[0].style.display = "flex";
+    }
+    //收藏回分区
+    function myCollectionreturnpartion() {
+        document.getElementsByClassName("myCollection")[0].style.display = "none";
+        // 将“分区”显现，同时设置为弹性布局
+        document.getElementsByClassName("partion")[0].style.display = "flex";
+    }
+    //回到首页
+    function returnhome() {
+        // 将“分区”、“曲库”、“我的收藏”隐藏
+        document.getElementsByClassName("partion")[0].style.display = "none";
+        document.getElementsByClassName("myCollection")[0].style.display = "none";
+        document.getElementsByClassName("musicLibrary")[0].style.display = "none";
+        // 将“首页”显现，同时设置为弹性布局
+        document.getElementsByClassName("home")[0].style.display = "flex";
+    }
+    //回到曲库
+    function returnmusiclibrary() {
+        // 将“首页”、“分区”、“我的收藏”隐藏
+        document.getElementsByClassName("home")[0].style.display = "none";
+        document.getElementsByClassName("partion")[0].style.display = "none";
+        document.getElementsByClassName("myCollection")[0].style.display = "none";
+        // 将“曲库”显现，同时设置为弹性布局
+        document.getElementsByClassName("musicLibrary")[0].style.display = "flex";
+    }
+    //回到我的收藏
+    function returnmycollection() {
+        // 将“首页”、“分区”、“曲库”隐藏
+        document.getElementsByClassName("home")[0].style.display = "none";
+        document.getElementsByClassName("partion")[0].style.display = "none";
+        document.getElementsByClassName("musicLibrary")[0].style.display = "none";
+        // 将“我的收藏”显现，同时设置为弹性布局
+        document.getElementsByClassName("myCollection")[0].style.display = "flex";
+    }
+    //收藏或取消收藏歌曲
+    function collection(number) {
+        if (document.getElementsByClassName("collection")[number - 1].getAttribute("collection") == 1) {
+            var songId = "song" + number;
+            document.getElementById(songId).remove();
+            //修改.collection的自定义属性collection为0，表示未收藏
+            document.getElementsByClassName("collection")[number - 1].setAttribute("collection", "0");
+            //改变.collection的背景颜色
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "rgb(0, 0, 0, 0)";
+        }
+        else {
+            //获取.box-front的文本
+            var frontText = document.getElementsByClassName("box-front")[number + 2].textContent;
+            //获取.box-back的文本
+            var backText = document.getElementsByClassName("box-back")[number + 2].children[0].textContent;
+            //在.temp中创建歌曲盒子
+            var temp = document.getElementsByClassName("temp")[0];
+            temp.innerHTML = "<div class='box' id='song" + number + "'><div class='box-front'>" + frontText + "</div><div class='box-back'>" + backText + "<div class='collection' id='collection" + number + "' style='background-color:#232545'><img class='icon' src='images/collection.png' onclick='collection(" + number + ")' onmouseover='changeColor3(" + number + ")' onmouseleave='changeColor4(" + number + ")'></div><audio controls><source src='music/" + number + ".mp4' />对不起，您的浏览器不支持HTML5音频播放。</audio></div></div>";
+            //将创建的歌曲盒子添加到.myCollection>.container中           
+            document.getElementsByClassName("container")[1].append(temp.children[0]);
+            //修改.collection的自定义属性collection为1，表示已收藏
+            document.getElementsByClassName("collection")[number - 1].setAttribute("collection", "1");
+            //改变.collection的背景颜色
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "#232545";
+        }
+    }
+    //改变.collection的背景颜色
+    function changeColor1(number) {
+        if (document.getElementsByClassName("collection")[number - 1].getAttribute("collection") == 1) {
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "#535373";
+        }
+        else {
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "#86d7d6";
+        }
+    }
+    function changeColor2(number) {
+        if (document.getElementsByClassName("collection")[number - 1].getAttribute("collection") == 1) {
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "#232545";
+        }
+        else {
+            document.getElementsByClassName("collection")[number - 1].style.backgroundColor = "rgb(0, 0, 0, 0)";
+        }
+    }
+    function changeColor3(number) {
+        var songId = "collection" + number;
+        document.getElementById(songId).style.backgroundColor = "#535373";
+    }
+    function changeColor4(number) {
+        var songId = "collection" + number;
+        document.getElementById(songId).style.backgroundColor = "#232545";
+    }
+    //轮播图
+    window.onload = function () {
+        var prev = document.querySelector("#prev");
+        var next = document.querySelector("#next");
+        var imglist = document.querySelector("#imglist");
+        var cuts = document.querySelectorAll("#cuts span");
+        var index = 1;
+        var len = 4;
+        var animated = false;
+        var timer;
+
+        function animate(offset) {
+            var left = parseInt(imglist.style.left) + offset;
+            var time = 150;
+            var interval = 1;
+            var speed = offset / (time / interval);
+            function go() { //位移动画效果
+                animated = true;
+                if ((speed > 0 && parseInt(imglist.style.left) < left) || (speed < 0 && parseInt(imglist.style.left) > left)) {
+                    imglist.style.left = parseInt(imglist.style.left) + speed + "px";
+                    setTimeout(go, interval);
+                } else {
+                    imglist.style.left = left + "px";
+                    if (left > -335) {
+                        imglist.style.left = -335 * len + "px";
+                    } else if (left < (-335 * len)) {
+                        imglist.style.left = "-335px";
+                    }
+                    animated = false;
+                }
+            }
+            go();
+        }
+
+        function showBtn() { //圆点按钮切换效果
+            for (var i = 0; i < cuts.length; i++) {
+                if (cuts[i].className == "on") {
+                    cuts[i].className = "";
+                    break;
+                }
+            }
+            cuts[index - 1].className = "on";
+        }
+        for (var i = 0; i < cuts.length; i++) {
+            cuts[i].onmouseover = function () {
+                if (animated) {
+                    return;
+                } else if (this.className == "on") {
+                    return;
+                }
+                var myIndex = parseInt(this.getAttribute("index"));//取到的index属性是字符串，所以转number;
+                var offset = -335 * (myIndex - index);
+                animate(offset);
+                index = myIndex;
+                showBtn();
+            }
+        }
+
+        prev.onclick = function () { //左箭头切换
+            if (animated) {
+                return;
+            }
+            if (index == 1) {
+                index = 4;
+            } else {
+                index -= 1;
+            }
+            animate(335);
+            showBtn();
+        }
+        next.onclick = function () { //右箭头切换
+            if (animated) {
+                return;
+            }
+            if (index == 4) {
+                index = 1;
+            } else {
+                index += 1;
+            }
+            animate(-335);
+            showBtn();
+        }
+
+        function play() { //自动播放
+            timer = setInterval(function () {
+                next.onclick();
+            }, 2000);
+        }
+        function stop() {
+            clearTimeout(timer);
+        }
+        banner.onmouseover = stop;
+        banner.onmouseout = play;
+        play();
+    }
+    //打字机效果
+    const h1 = document.querySelector('h1')
+    // h1.innerHTML = h1.textContent.replace(/\S/g, "<span>$&</span>")
+
+    // Support Space:
+    h1.innerHTML = h1.textContent
+        .replace(/\S/g, "<span>$&</span>")
+        .replace(/\s/g, "<span>&nbsp;</span>")
+
+    let delay = 0
+    document.querySelectorAll('span').forEach((span, index) => {
+        delay += 0.1
+
+        if (index === 6) delay += 0.3
+
+        span.style.setProperty('--delay', `${delay}s`)
+    })
+
+    h1.addEventListener('animationend', (e) => {
+        if (e.target === document.querySelector('h1 span:last-child')) {
+            h1.classList.add('ended')
+        }
+    })
+</script>
+
+</html>
